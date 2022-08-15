@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        color: white;
+      }
+      html {
+        background-color: #282c34;
+      }
+      .container {
+        width: 100vh;
+        height: 100vh;
+        display: grid;
+        grid-template-rows: 3rem 70vh 3rem;
+        text-align: center;
+
+        align-items: center;
+        justify-items: center;
+      }
+      img {
+        height: 100%;
+        width: 100%;
+        object-fit: contain;
+        border: 1px solid pink;
+      }
+      button {
+        padding: 10px;
+        background-color: white;
+        color: #282c34;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Funny cats!!! &#128514;</h1>
+      <img src="#" />
+      <button>New Cat &#128008;</button>
+    </div>
+    <script>
+      const img = document.querySelector('img');
+      const button = document.querySelector('button');
+      const fetchNew = () => {
+        fetch(
+          'https://api.giphy.com/v1/gifs/translate?api_key=Qzz0xN1HK9JfOpgajfm8CWKCVfdnYPtI&s=cats',
+          { mode: 'cors' }
+        ).then(function (response) {
+          console.log(
+            response.json().then(function (response) {
+              img.src = response.data.images.original.url;
+            })
+          );
+        });
+      };
+      fetchNew();
+      button.addEventListener('click', fetchNew);
+    </script>
+  </body>
+</html>
