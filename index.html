@@ -34,31 +34,62 @@
         background-color: white;
         color: #282c34;
       }
+      input {
+        background-color: rgb(126, 95, 100);
+      }
+      form {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1>Funny cats!!! &#128514;</h1>
+      <h1>Funny gifs! &#128514;</h1>
       <img src="#" />
-      <button>New Cat &#128008;</button>
+      <button id="new-gif">New Gif</button>
+      <form id="search-form">
+        <label for="search-input">Search something diffrent!</label>
+        <input id="search-input" type="text" />
+        <button id="search-button">Search!</button>
+      </form>
     </div>
     <script>
+      memory = {
+        search: 'cats',
+      };
       const img = document.querySelector('img');
-      const button = document.querySelector('button');
-      const fetchNew = () => {
+      const buttonNewGif = document.querySelector('button#new-gif');
+      const startingInput = 'cats';
+      function fetchNew(input) {
         fetch(
-          'https://api.giphy.com/v1/gifs/translate?api_key=Qzz0xN1HK9JfOpgajfm8CWKCVfdnYPtI&s=cats',
+          `https://api.giphy.com/v1/gifs/translate?api_key=Qzz0xN1HK9JfOpgajfm8CWKCVfdnYPtI&s=${input}`,
           { mode: 'cors' }
         ).then(function (response) {
-          console.log(
-            response.json().then(function (response) {
+          response
+            .json()
+            .then(function (response) {
               img.src = response.data.images.original.url;
             })
-          );
+            .catch(function (error) {
+              console.log('error');
+            });
         });
-      };
-      fetchNew();
-      button.addEventListener('click', fetchNew);
+      }
+      fetchNew(memory.search);
+      const input = document.querySelector('#search-input');
+      document.addEventListener('submit', (e) => {
+        e.preventDefault();
+        memory.search = input.value;
+        fetchNew(memory.search);
+        input.value = '';
+      });
+
+      buttonNewGif.addEventListener('click', () => {
+        fetchNew(memory.search);
+        console.log(memory.search);
+      });
     </script>
   </body>
 </html>
